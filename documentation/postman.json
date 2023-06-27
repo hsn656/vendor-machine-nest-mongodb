@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "47d6ff86-cb91-498b-885a-2d40607b7e04",
+		"name": "vendor-machine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19952375",
+		"_collection_link": "https://blue-escape-486215.postman.co/workspace/My-Workspace~d4b37d56-b546-45d0-840b-6f0b555b4ff8/collection/19952375-47d6ff86-cb91-498b-885a-2d40607b7e04?action=share&creator=19952375&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test1\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"test1\",\n    \"password\": \"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth/register",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "237"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ed-0WSF4lQ/cGto3HQ6fzJXertf5vE\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 Jun 2023 16:48:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": true,\n    \"message\": \"success\",\n    \"data\": {\n        \"username\": \"test1\",\n        \"password\": \"$2b$10$NCDknwi6Mm7BTxisoM1DT.1vxSRWOWq0RL0O.vDmMwKgH95hE1SGm\",\n        \"deposit\": 0,\n        \"role\": \"buyer\",\n        \"_id\": \"649b12ec564556990a14063b\",\n        \"__v\": 0\n    },\n    \"errorCode\": null,\n    \"errors\": []\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
