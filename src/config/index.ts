@@ -7,5 +7,10 @@ const envFilePath: string = getEnvPath(resolve(__dirname, '..'));
 config({ path: envFilePath });
 
 export const configuration = () => ({
-  port: parseInt(process.env.PORT, 10) || 3000,
+  app: {
+    port: parseInt(process.env.PORT, 10) || 3000,
+  },
+  db: {
+    uri: process.env.DB_URI,
+  },
 });

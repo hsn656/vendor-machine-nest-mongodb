@@ -4,12 +4,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { configuration } from './config';
 import { ApiModule } from './api/api.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseConfigService } from './database/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      useClass: MongooseConfigService,
     }),
     ApiModule,
   ],
