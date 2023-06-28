@@ -3,18 +3,26 @@ import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
+export const roles = {
+  admin: 'admin',
+  buyer: 'buyer',
+  seller: 'seller',
+};
+
+const roleNames = Object.keys(roles);
+
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ required: true, unique: true })
   username: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 
-  @Prop()
+  @Prop({ required: true })
   deposit: number;
 
-  @Prop()
+  @Prop({ required: true, enum: roleNames })
   role: string;
 }
 

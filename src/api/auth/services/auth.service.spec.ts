@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { configuration } from 'src/config';
 import { MongooseConfigService } from 'src/database/config';
-import { User, UserSchema } from 'src/database/schemas/user.schema';
+import { roles, User, UserSchema } from 'src/database/schemas/user.schema';
 import { errorMessages } from 'src/errors/custom';
 import { loginDTO, registerDTO } from '../dtos/auth.dto';
 import { AuthService } from './auth.service';
@@ -17,7 +17,7 @@ describe('AuthService', () => {
   const fakeUser: Partial<User> = {
     username: 'test name',
     password: 'password',
-    role: 'buyer',
+    role: roles.buyer,
   };
 
   beforeEach(async () => {

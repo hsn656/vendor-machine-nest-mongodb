@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { hash, compare } from 'bcrypt';
-import { User } from 'src/database/schemas/user.schema';
+import { roles, User } from 'src/database/schemas/user.schema';
 import { errorMessages } from 'src/errors/custom';
 import { loginDTO, PayloadDto, registerDTO } from '../dtos/auth.dto';
 
@@ -36,7 +36,7 @@ export class AuthService {
     const newUser = await this.usersModel.create({
       ...user,
       deposit: 0,
-      role: 'buyer',
+      role: roles.buyer,
     });
     return newUser;
   }
