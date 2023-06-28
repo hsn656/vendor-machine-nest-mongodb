@@ -17,9 +17,14 @@ export class AuthService {
   ) {}
 
   async register(user: registerDTO) {
-    const alreadyExistingUser = await this.usersModel.findOne({
-      username: user.username,
-    });
+    const alreadyExistingUser = await this.usersModel.findOne(
+      {
+        username: user.username,
+      },
+      {
+        username: 1,
+      },
+    );
     if (alreadyExistingUser)
       throw new ConflictException(errorMessages.auth.userAlreadyExist);
 
