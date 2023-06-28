@@ -4,9 +4,10 @@ import { ErrorsFilter } from 'src/errors/errors.filter';
 import { SucessResponseInterceptor } from 'src/helpers/sucess-response.interceptor';
 import { ApiController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, ProductModule],
   controllers: [ApiController],
   providers: [
     {
