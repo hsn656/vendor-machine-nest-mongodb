@@ -8,10 +8,18 @@ export class registerDTO {
   public password: string;
 }
 
+export class loginDTO {
+  @IsNotEmpty()
+  public username: string;
+
+  @IsNotEmpty()
+  public password: string;
+}
+
 export class PayloadDto {
   @IsNotEmpty()
   public username: string;
 
   @IsNotEmpty()
-  public id: number;
+  public id: string;
 }

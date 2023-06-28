@@ -3,11 +3,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 import { configuration } from 'src/config';
 import { MongooseConfigService } from 'src/database/config';
 import { User, UserSchema } from 'src/database/schemas/user.schema';
 import { errorMessages } from 'src/errors/custom';
-import { registerDTO } from '../dtos/auth.dto';
+import { loginDTO, registerDTO } from '../dtos/auth.dto';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -57,8 +58,8 @@ describe('AuthService', () => {
   });
 
   describe('AuthService: register method', () => {
-    it('should throw error user already registered', () => {
-      fakeUserModel.findOne = jest.fn().mockResolvedValue(fakeUser);
+    it('should throw error if user already registered', () => {
+      fakeUserModel.findOne = jest.fn().mockResolvedValueOnce(fakeUser);
       const result = service.register(fakeUser as registerDTO);
       expect(fakeUserModel.findOne).toBeCalled();
       expect(result).rejects.toThrowError(
@@ -67,12 +68,42 @@ describe('AuthService', () => {
     });
 
     it('should success', async () => {
-      fakeUserModel.findOne = jest.fn().mockResolvedValue(null);
-      fakeUserModel.create = jest.fn().mockResolvedValue(fakeUser);
+      fakeUserModel.findOne = jest.fn().mockResolvedValueOnce(null);
+      fakeUserModel.create = jest.fn().mockResolvedValueOnce(fakeUser);
       const result = await service.register(fakeUser as registerDTO);
       expect(fakeUserModel.findOne).toBeCalled();
       expect(fakeUserModel.create).toBeCalled();
       expect(result).toStrictEqual(fakeUser);
+    });
+  });
+
+  describe('AuthService: login method', () => {
+    it('should throw error if wrong username', () => {
+      fakeUserModel.findOne = jest.fn().mockResolvedValueOnce(null);
+      const result = service.login(fakeUser as loginDTO);
+      expect(fakeUserModel.findOne).toBeCalled();
+      expect(result).rejects.toThrowError(
+        errorMessages.auth.wronCredentials.message,
+      );
+    });
+
+    it('should throw error if wrong password', () => {
+      fakeUserModel.findOne = jest.fn().mockResolvedValueOnce(fakeUser);
+      jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(false);
+      const result = service.login(fakeUser as loginDTO);
+      expect(fakeUserModel.findOne).toBeCalled();
+      expect(result).rejects.toThrowError(
+        errorMessages.auth.wronCredentials.message,
+      );
+    });
+
+    it('should success', async () => {
+      fakeUserModel.findOne = jest.fn().mockResolvedValueOnce(fakeUser);
+      bcrypt.compare = jest.fn().mockResolvedValueOnce(true);
+      const result = await service.login(fakeUser as loginDTO);
+      expect(fakeUserModel.findOne).toBeCalled();
+      expect(bcrypt.compare).toBeCalled();
+      expect(result).toHaveProperty('accessToken');
     });
   });
 });

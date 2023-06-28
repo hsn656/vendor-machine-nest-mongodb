@@ -98,6 +98,120 @@
 							"body": "{\n    \"isSuccess\": true,\n    \"message\": \"success\",\n    \"data\": {\n        \"username\": \"test1\",\n        \"password\": \"$2b$10$NCDknwi6Mm7BTxisoM1DT.1vxSRWOWq0RL0O.vDmMwKgH95hE1SGm\",\n        \"deposit\": 0,\n        \"role\": \"buyer\",\n        \"_id\": \"649b12ec564556990a14063b\",\n        \"__v\": 0\n    },\n    \"errorCode\": null,\n    \"errors\": []\n}"
 						}
 					]
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"",
+									"",
+									"pm.collectionVariables.set(\"token\", data.data.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test1\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"test1\",\n    \"password\": \"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "289"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"121-k+s2ibs8R5TYLOyQwK6X/0nYjeY\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 Jun 2023 08:45:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": true,\n    \"message\": \"success\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OWIxMmVjNTY0NTU2OTkwYTE0MDYzYiIsInVzZXJuYW1lIjoidGVzdDEiLCJpYXQiOjE2ODc5NDE5NDQsImV4cCI6MTY4Nzk1Mjc0NH0.aJHoVbchAMIydZCqB27uGAKtb4ya9N5OjJAXQ3Ozv68\"\n    },\n    \"errorCode\": null,\n    \"errors\": []\n}"
+						}
+					]
 				}
 			]
 		}
@@ -127,6 +241,10 @@
 			"key": "url",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }
