@@ -6,10 +6,8 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { Model } from 'mongoose';
-import { User } from 'src/database/schemas/user.schema';
+import { UsersRepository } from 'src/database/repository/user.repository';
 import { errorMessages } from 'src/errors/custom';
 import { PayloadDto } from '../dtos/auth.dto';
 
@@ -18,7 +16,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    @InjectModel(User.name) private usersModel: Model<User>,
+    private usersRepository: UsersRepository,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -31,7 +29,7 @@ export class AuthGuard implements CanActivate {
           secret: this.configService.get('jwt.secret'),
         },
       );
-      request.user = await this.usersModel.findById(payload.id);
+      request.user = await this.usersRepository.findById(payload.id);
       return true;
     } catch (error) {
       if (error instanceof TokenExpiredError)

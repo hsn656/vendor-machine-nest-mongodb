@@ -5,23 +5,22 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { hash, compare } from 'bcrypt';
-import { roles, User } from 'src/database/schemas/user.schema';
+import { roles } from 'src/database/schemas/user.schema';
 import { errorMessages } from 'src/errors/custom';
 import { loginDTO, PayloadDto, registerDTO } from '../dtos/auth.dto';
+import { UsersRepository } from 'src/database/repository/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private configService: ConfigService,
-    @InjectModel(User.name) private usersModel: Model<User>,
+    private userRepository: UsersRepository,
   ) {}
 
   async register(user: registerDTO) {
-    const alreadyExistingUser = await this.usersModel.findOne(
+    const alreadyExistingUser = await this.userRepository.findOne(
       {
         username: user.username,
       },
@@ -33,7 +32,7 @@ export class AuthService {
       throw new ConflictException(errorMessages.auth.userAlreadyExist);
 
     user.password = await hash(user.password, 10);
-    const newUser = await this.usersModel.create({
+    const newUser = await this.userRepository.create({
       ...user,
       deposit: 0,
       role: roles.buyer,
@@ -42,7 +41,7 @@ export class AuthService {
   }
 
   async login(userCredentials: loginDTO) {
-    const user = await this.usersModel.findOne(
+    const user = await this.userRepository.findOne(
       {
         username: userCredentials.username,
       },
