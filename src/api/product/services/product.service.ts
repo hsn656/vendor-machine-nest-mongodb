@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { FilterQuery } from 'mongoose';
 import { ProductsRepository } from 'src/database/repository/product.repository';
+import { Product } from 'src/database/schemas/product.schema';
 import { User } from 'src/database/schemas/user.schema';
 import { CreateProductDto } from '../dtos/product.dto';
 
@@ -17,7 +19,12 @@ export class ProductService {
   }
 
   findAll() {
-    return `This action returns all product`;
+    return this.productsRepository.find(
+      {},
+      {
+        __v: 0,
+      },
+    );
   }
 
   findOne(id: number) {

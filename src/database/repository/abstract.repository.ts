@@ -17,8 +17,11 @@ export abstract class AbstractRepository<T extends Document> {
     return this.entityModel.findOne(entityFilterQuery, projection).exec();
   }
 
-  async find(entityFilterQuery: FilterQuery<T>): Promise<T[] | null> {
-    return this.entityModel.find(entityFilterQuery);
+  async find(
+    entityFilterQuery?: FilterQuery<T>,
+    projection?: ProjectionType<T> | null,
+  ): Promise<T[] | null> {
+    return this.entityModel.find(entityFilterQuery, projection).lean();
   }
 
   async findById(
